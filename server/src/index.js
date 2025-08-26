@@ -16,12 +16,19 @@ import rateLimit from 'express-rate-limit';
 const app = express();
 await connectDB();
 
+app.use(cors({
+  origin: 'http://localhost:5173', // or 3000 if that’s your React dev server
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // only if you’re using cookies or Authorization header
+}));
+
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '2mb' }));
 app.use(cookieParser());
-app.use(cors({ origin: env.corsOrigin, credentials: true }));
+
 app.use(rateLimit({ windowMs: 60_000, max: 120 }));
 
 app.use('/api/auth', authRoutes);
