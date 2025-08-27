@@ -17,18 +17,14 @@ const app = express();
 await connectDB();
 
 
-// Apply CORS to everything (including preflight OPTIONS automatically)
-// app.use(cors(
-
-// ));
-
-
+app.use(express.json({ limit: '2mb' }));
+app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
-app.use(express.json({ limit: '2mb' }));
-app.use(cookieParser());
+
+
 
 app.use(rateLimit({ windowMs: 60_000, max: 120 }));
 
