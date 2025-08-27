@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  --font-chewy: "Chewy", cursive;
+}

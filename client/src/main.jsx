@@ -3,18 +3,23 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import Timeline from './pages/Timeline'
 import NewEntry from './pages/NewEntry'
-import JoinSpace from './pages/JoinSpace'
+
+import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignUp'
+import "./index.css";
 
 const router = createBrowserRouter([
-  { path: '/', element: <Auth/> },
+  { path: '/', element: <LandingPage/> },
+  { path: '/register', element: <SignupPage/> },
+  { path: '/login', element: <LoginPage/> },
   { path: '/dashboard', element: <Dashboard/> },
   { path: '/timeline/:spaceId', element: <Timeline/> },
   { path: '/new/:spaceId', element: <NewEntry/> },
-  { path: '/join', element: <JoinSpace/> },
+  
 ])
 
 const qc = new QueryClient()

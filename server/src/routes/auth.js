@@ -39,5 +39,20 @@ r.post('/logout', (req, res) => {
   res.json({ ok: true });
 });
 
+
+
+r.get('/me', async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ user: null });
+
+  try {
+    const payload = jwt.verify(token, env.jwtSecret);
+    const user = await User.findById(payload.id).select("id name email");
+    res.json({ user });
+  } catch (err) {
+    res.status(401).json({ user: null });
+  }
+});
+
 export default r;
 
