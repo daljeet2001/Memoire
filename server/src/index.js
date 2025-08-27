@@ -16,12 +16,22 @@ import rateLimit from 'express-rate-limit';
 const app = express();
 await connectDB();
 
-app.use(cors({
-  origin: 'https://memoire-six.vercel.app', // or 3000 if that’s your React dev server
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // only if you’re using cookies or Authorization header
+
+app.use(
+  cors({
+    origin: "https://memoire-six.vercel.app", // your frontend domain
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // ✅ allow cookies
+  })
+);
+
+// Important: handle preflight explicitly (sometimes needed on Render)
+app.options("*", cors({
+  origin: "https://memoire-six.vercel.app",
+  credentials: true,
 }));
+
 
 app.use(helmet());
 app.use(compression());
