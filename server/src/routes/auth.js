@@ -22,7 +22,13 @@ r.post('/register', async (req, res) => {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, passwordHash });
   const token = jwt.sign({ id: user._id, email }, env.jwtSecret, { expiresIn: '7d' });
-  res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: false, maxAge: 7*24*3600*1000 });
+  res.cookie('token', token, {
+  httpOnly: true,
+  sameSite: 'none',   // allow cross-site
+  secure: true,       // required on HTTPS
+  maxAge: 7 * 24 * 3600 * 1000
+});
+
   res.json({ user: { id: user._id, name, email } });
 });
 
@@ -32,7 +38,13 @@ r.post('/login', async (req, res) => {
   const user = await User.findOne({ email });
   if (!user || !(await user.comparePassword(password))) return res.status(401).json({ error: 'Invalid creds' });
   const token = jwt.sign({ id: user._id, email }, env.jwtSecret, { expiresIn: '7d' });
-  res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: false, maxAge: 7*24*3600*1000 });
+ res.cookie('token', token, {
+  httpOnly: true,
+  sameSite: 'none',   // allow cross-site
+  secure: true,       // required on HTTPS
+  maxAge: 7 * 24 * 3600 * 1000
+});
+
   res.json({ user: { id: user._id, name: user.name, email } });
 });
 
