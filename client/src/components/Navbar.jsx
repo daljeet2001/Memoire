@@ -8,15 +8,27 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
 
   // Fetch logged-in user
-  useEffect(() => {
-    fetch("https://memoire-sa0g.onrender.com/api/auth/me", {
-      credentials: "include", // 👈 important for cookies
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data.user);
+ useEffect(() => {
+  const fetchMe = async () => {
+    try {
+      const res = await fetch("https://memoire-sa0g.onrender.com/api/auth/me", {
+        credentials: "include",
       });
-  }, []);
+
+      if (!res.ok) {
+        // not logged in → do nothing
+        return;
+      }
+
+      const data = await res.json();
+      setUser(data.user);
+    } catch (err) {
+      console.error("Failed to fetch /me:", err);
+    }
+  };
+
+  fetchMe();
+}, []);
 
   const handleLogout = useCallback(async () => {
     await fetch("https://memoire-sa0g.onrender.com/api/auth/logout", {
