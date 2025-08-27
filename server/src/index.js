@@ -19,7 +19,12 @@ await connectDB();
 
 app.use(express.json({ limit: '2mb' }));
 app.use(cookieParser());
-app.use(cors());
+const allowedOrigin = "https://memoire-six.vercel.app";
+
+app.use(cors({
+  origin: allowedOrigin,   
+  credentials: true       
+}));
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
