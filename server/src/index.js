@@ -18,10 +18,9 @@ await connectDB();
 
 
 // Apply CORS to everything (including preflight OPTIONS automatically)
-app.use(cors({
-  origin: "https://memoire-six.vercel.app",
-  credentials: true,
-}));
+// app.use(cors(
+
+// ));
 
 
 
