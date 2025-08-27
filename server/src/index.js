@@ -17,20 +17,12 @@ const app = express();
 await connectDB();
 
 
-app.use(
-  cors({
-    origin: "https://memoire-six.vercel.app", // your frontend domain
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // ✅ allow cookies
-  })
-);
-
-// Important: handle preflight explicitly (sometimes needed on Render)
-app.options("*", cors({
+// Apply CORS to everything (including preflight OPTIONS automatically)
+app.use(cors({
   origin: "https://memoire-six.vercel.app",
   credentials: true,
 }));
+
 
 
 app.use(helmet());
