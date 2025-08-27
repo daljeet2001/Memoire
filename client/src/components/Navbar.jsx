@@ -9,7 +9,7 @@ export default function Navbar() {
 
   // Fetch logged-in user
   useEffect(() => {
-    fetch("http://localhost:4000/api/auth/me", {
+    fetch("https://memoire-sa0g.onrender.com/api/auth/me", {
       credentials: "include", // 👈 important for cookies
     })
       .then((res) => res.json())
@@ -19,7 +19,7 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    await fetch("http://localhost:4000/api/auth/logout", {
+    await fetch("https://memoire-sa0g.onrender.com/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });
