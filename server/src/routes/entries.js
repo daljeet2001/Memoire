@@ -38,19 +38,30 @@ r.post('/', async (req, res) => {
 });
 
 r.get('/', async (req, res) => {
-  const schema = z.object({
-    spaceId: z.string(),
-    cursor: z.string().optional(), // createdAt cursor
-    limit: z.string().optional()
-  });
-  const { spaceId, cursor, limit='15' } = schema.parse(req.query);
-  const q = { space: spaceId };
-  if (cursor) q.createdAt = { $lt: new Date(cursor) };
+  try {
+    const { spaceId, cursor, limit = 20 } = req.query;
 
-  const items = await Entry.find(q).sort({ date: -1, _id: -1 }).limit(parseInt(limit));
-  const nextCursor = items.length ? items[items.length - 1].createdAt.toISOString() : null;
-  res.json({ items, nextCursor });
+    const query = { space: spaceId };
+    if (cursor) {
+      query._id = { $lt: cursor }; // assuming cursor pagination by _id
+    }
+
+    // parse limit safely
+    const limitNum = parseInt(limit, 10);
+
+    // find entries and populate author name
+    const entries = await Entry.find(query)
+      .sort({ date: -1, _id: -1 })
+      .limit(limitNum)
+      .populate('author', 'name'); // only get name field
+
+    res.json(entries);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
+
 
 export default r;
 
