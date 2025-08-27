@@ -17,7 +17,7 @@ const app = express();
 await connectDB();
 
 app.use(cors({
-  origin: 'http://localhost:5178', // or 3000 if that’s your React dev server
+  origin: 'https://memoire-six.vercel.app', // or 3000 if that’s your React dev server
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // only if you’re using cookies or Authorization header
