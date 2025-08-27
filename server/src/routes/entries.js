@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { authRequired } from '../middleware/auth.js';
 import { Entry } from '../models/Entry.js';
 import { Space } from '../models/Space.js';
+import {User} from '../models/User.js'
 
 const r = Router();
 r.use(authRequired);

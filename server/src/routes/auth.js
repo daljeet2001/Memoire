@@ -3,6 +3,8 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
+import {Entry} from '../models/Entry.js';
+import {Space} from '../models/Space.js'
 import { env } from '../config/env.js';
 
 const r = Router();
@@ -10,7 +12,7 @@ const r = Router();
 const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  password: z.string().min(6)
+  password: z.string().min(3)
 });
 
 r.post('/register', async (req, res) => {
@@ -53,6 +55,8 @@ r.get('/me', async (req, res) => {
     res.status(401).json({ user: null });
   }
 });
+
+
 
 export default r;
 

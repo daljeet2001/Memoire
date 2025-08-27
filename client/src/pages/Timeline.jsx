@@ -93,7 +93,11 @@ const save = async (e) => {
   const { data: savedEntry } = await api.post('/entries', { spaceId, type, text, media: uploadedMedia });
 
   // Prepend new entry to timeline immediately
-  setItems(prev => [savedEntry, ...prev]);
+  // setItems(prev => [savedEntry, ...prev]);
+
+  setItems([]);
+  setCursor(null);
+  load(); 
 
   // Clear form
   setText('');
@@ -108,7 +112,7 @@ const save = async (e) => {
 
   return (
  <div className="font-chewy flex flex-col items-center text-center px-4">
-  <h2 className="text-3xl mb-6">Timeline</h2>
+  <h2 className="text-3xl mb-6 mt-4">Timeline</h2>
 
   {/* Invite section */}
   {joinToken && (
@@ -130,7 +134,7 @@ const save = async (e) => {
   {/* Add New Entry button */}
  <li className="mb-8 ml-6 relative">
   {/* Timeline marker */}
-  <span className="absolute -left-4 top-0 w-3 h-3 bg-green-600 rounded-full ring-2 ring-white"></span>
+  <span className="absolute -left-4 top-0 w-3 h-3 bg-indigo-600 rounded-full ring-2 ring-white"></span>
 
   {!showForm ? (
     <button
@@ -152,17 +156,35 @@ const save = async (e) => {
       </div>
 
       {/* Type */}
-      <div className="flex flex-col mb-3">
-        <label className="text-gray-700 text-sm mb-1">Type</label>
-        <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          className="border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm"
-        >
-          <option value="note">Note</option>
-          <option value="photo">Photo</option>
-        </select>
-      </div>
+     {/* Type Toggle */}
+<div className="flex items-center mb-3">
+  <label className="text-gray-700 text-sm mr-3">Type</label>
+  <div className="flex rounded-md overflow-hidden border border-gray-300">
+    <button
+      type="button"
+      onClick={() => setType("note")}
+      className={`px-3 py-1 text-sm ${
+        type === "note"
+          ? "bg-indigo-600 text-white"
+          : "bg-white text-gray-700 hover:bg-gray-100"
+      }`}
+    >
+      Note
+    </button>
+    <button
+      type="button"
+      onClick={() => setType("photo")}
+      className={`px-3 py-1 text-sm ${
+        type === "photo"
+          ? "bg-indigo-600 text-white"
+          : "bg-white text-gray-700 hover:bg-gray-100"
+      }`}
+    >
+      Photo
+    </button>
+  </div>
+</div>
+
 
       {/* Note */}
       {type === "note" && (
@@ -206,7 +228,7 @@ const save = async (e) => {
 <button
   onClick={save}
   disabled={uploading || (type === "photo" && !files.length && !media.length)}
-  className="mt-3 w-full bg-green-600 text-white py-1 rounded hover:bg-green-700 transition text-sm"
+  className="mt-3 w-full bg-indigo-600 text-white py-1 rounded hover:bg-indigo-700 transition text-sm"
 >
   {uploading ? "Uploading..." : "Save"}
 </button>
